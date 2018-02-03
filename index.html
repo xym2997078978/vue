@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{address}}
+        {{fullname}}
+        {{info}}
+        {{totole}}
+        {{prices}}
+        <button @click="add">点我</button>
+    </div>
+    <script src="vue.min.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '666',
+                info: null,
+                totole: 0,
+                price: 10,
+                count: 5,
+                sheng: null,
+                shi: null,
+                xian: null,
+                firstName: '野猫',
+                lastName: '小'
+            }, 
+            // 监听参数变化
+            watch: {
+                msg (old, newVal) {
+                    console.log(old);
+                    console.log(newVal);
+                    this.info = old + newVal;
+                }
+            },
+            // 计算属性，在载入页面时，做运算
+            computed: {
+                prices () {
+                    return this.price * this.count;
+                },
+                fullname: {
+                    get () {
+                        return this.lastName + this.firstName;
+                    },
+                    set (obj) {
+                        this.lastName = obj.lastName;
+                        this.firstName = obj.firstName;
+                    }
+                },
+                address: {
+                    get () {
+                        return this.sheng + this.shi + this.xian;
+                    },
+                    set (obj) {
+                        this.sheng = obj.sheng;
+                        this.shi = obj.shi;
+                        this.xian = obj.xian;
+                    }
+                }
+            },
+            // 定义方法
+            methods: {
+                add () {
+                    this.msg = 555;
+                    this.totole = this.price * this.count;
+                },
+                getName () {
+                    console.log('xym');
+                }
+            },
+            beforeCreate () {
+                console.log(this.$el);
+                console.log(this.$data);
+            },
+            // created的时候，挂载元素没有被创建，但是data和method数组方法已经可以使用
+            created () {
+                console.log(this.$el);
+                console.log(this.$data);
+            },
+            // beforeMount的时候，挂载元素被渲染到页面，data和method数组方法已经可以使用，但数据没有绑定
+            beforeMount () {
+                console.log(this.$el);                
+            },
+            // mounted的时候，挂载元素被渲染到页面，data和method数组方法已经可以使用，数据绑定完成
+            mounted () {
+                console.log(this.$el);
+                this.getName();                
+            }
+        });
+        vm.address = {
+            sheng: '山西省',
+            shi: '吕梁市',
+            xian: '交口县'
+        }
+        vm.fullname = {
+            lastName: '猫',
+            firstName: '小笨'
+        }
+    </script>
+</body>
+</html>
